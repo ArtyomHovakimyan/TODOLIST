@@ -8,6 +8,7 @@ namespace Mic.Volo.MyTodoList
 {
     class Program
     {
+        static int IDS = 0;
         static void Main(string[] args)
         {
             List<MyToDo> MyToDosTask = new List<MyToDo>();
@@ -16,16 +17,18 @@ namespace Mic.Volo.MyTodoList
             Console.WriteLine("If  you has todo press 2 to show  all");
             Console.WriteLine("If  you has active todo press 3 to show");
             Console.WriteLine("delete todo  press 4 and  enter Id ");
-            Console.WriteLine("show completed todos");
+            Console.WriteLine(" press 5 enter Id which you want make completed");
+            Console.WriteLine("press 6 show completed todos");
             string mutq;
             int indexID;
             byte n;
+            //IEnumerable<MyToDo> myTos;
             n = byte.Parse(Console.ReadLine());
             switch (n)
             {
                 case 1: Console.WriteLine("Enter your text:");
             mutq = Console.ReadLine();
-                    MyToDosTask.Add(new MyToDo(mutq,DateTime.Now));
+                    MyToDosTask.Add(new MyToDo(mutq,DateTime.Now,IDS));
                     goto default;
                    // break;
                 case 2: Show(MyToDosTask);
@@ -40,8 +43,16 @@ namespace Mic.Volo.MyTodoList
                     indexID = int.Parse(Console.ReadLine());
                     MyToDosTask.RemoveAt(indexID);
                     goto default;
-                    //break;
-                default: goto MyLabel;
+
+                case 5: Console.WriteLine("enter ID which you want to make completed:");
+                    indexID = int.Parse(Console.ReadLine());
+
+                    IEnumerable<MyToDo> myTos= MakeCompleted(MyToDosTask, indexID);
+                    goto default;
+                case 6: ShowCompleted(MakeCompleted(MyToDosTask));
+                    goto default;
+                //break;
+                default: IDS++; goto MyLabel;
             }
 
 
@@ -65,11 +76,17 @@ namespace Mic.Volo.MyTodoList
                 Console.WriteLine(item);
             }
         }
-        static void Completed(List<MyToDo> mies)
+        static  MakeCompleted(List<MyToDo> mies,params int[] id)
         {
-            var f = from i in mies
+           
+              
+        }
+        static void ShowCompleted(IEnumerable<MyToDo> dos)
+        {
+            var a = from i in dos
+                    where i.Save == MyToDo.SaveAs.Completed
                     select i;
-            foreach (var item in f)
+            foreach (var item in a)
             {
                 Console.WriteLine(item);
             }
